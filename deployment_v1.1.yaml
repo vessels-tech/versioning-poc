@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: centralledger
+  labels:
+    app: centralledger
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: centralledger
+  template:
+    metadata:
+      labels:
+        app: centralledger
+    spec:
+      containers:
+      - name: central-ledger
+        image: mojaloop/central-ledger:v10.1.1
+        # TODO: put in another pod
+      - name: mysql
+        image: mysql
+        # ports:
+        # - containerPort: 
