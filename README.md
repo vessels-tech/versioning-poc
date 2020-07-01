@@ -42,10 +42,18 @@ kubectl delete pv mysql-pv-volume
 
 
 
-## Kafka debug:
+## Handy Snippets:
+
+### Kubectl
 
 ```bash
+# watch important things
+watch -n 1 "kubectl get po; echo "---"; kubectl get service; echo "---"; kubectl get deployments"
+```
 
+### Kafka
+
+```bash
 # Once you have the testclient pod above running, you can list all kafka topics with:
 kubectl -n default exec testclient -- kafka-topics --zookeeper kafka-zookeeper:2181 --list
 
