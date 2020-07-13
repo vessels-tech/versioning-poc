@@ -3,7 +3,7 @@
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 REPO_DIR="${DIR}/../repo"
 HELM_DIR="${DIR}/../helm"
-LOCAL_HELM_REPO_URI="${LOCAL_HELM_REPO_URI:-localhost:8000}"
+LOCAL_HELM_REPO_URI="${LOCAL_HELM_REPO_URI:-http://localhost:8000}"
 
 set -u
 set -e

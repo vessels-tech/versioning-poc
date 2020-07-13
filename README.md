@@ -12,15 +12,39 @@ make run-helm-server
 # package all helm versions
 make package
 
+# TODO: - add these as chart dependencies!
+# prerequisites: not going to be touched by us
+helm repo add public http://storage.googleapis.com/kubernetes-charts-incubator
+
+# install mysql, PVC for kafka, etc
+kubectl apply -f ./deployment_setup.yaml
+helm install kafka public/kafka --values ./kafka_values.yaml
+
 # add the local repo
 helm repo add local http://localhost:8000
 
-# install v1.0.0
-helm install versioning-poc local/versioning-poc --version 1.0.0
+# search for our chart
+helm search repo local
 
+# install v1.0.0
+helm install versioning-poc local/versioning-poc --version 1.0.0 --namespace 
 ```
 
+## Using Make
 
+```bash
+# in separate window, start a local helm server
+# This is so we get the nice helm `install` and `upgrade` commands
+make run-helm-server
+
+# Install v1.0.0
+# make will also install any other dependencies if required
+make install
+
+
+# Clean up everything
+make uninstall-all
+```
 
 ## Install a deployment
 
