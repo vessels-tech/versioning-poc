@@ -3,6 +3,23 @@
 ## TODO:
 - create 2 helm versions
 
+## Package and Install
+
+```bash
+# in separate window, start a local server
+make run-helm-server
+
+# package all helm versions
+make package
+
+# add the local repo
+helm repo add local http://localhost:8000
+
+# install v1.0.0
+helm install versioning-poc local/versioning-poc --version 1.0.0
+
+```
+
 
 
 ## Install a deployment
