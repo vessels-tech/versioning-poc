@@ -7,8 +7,9 @@
 
 ## Install a deployment
 
-```
-kubectl apply -f ./deployment_v1.0.yaml
+```bash
+# kubectl apply -f ./deployment_v1.0.yaml
+helm install versioning-poc ./helm
 ```
 
 ## MVP - mininal helm
