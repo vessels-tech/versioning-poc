@@ -1,25 +1,11 @@
-#
+##
 # Versioning POC
-#
-
-# PATH := node_modules/.bin:$(PATH)
+##
 SHELL := /bin/bash
-
 PROJECT = "Versioning POC"
 DIR = $(shell pwd)
 REPO_DIR := $(DIR)/repo
 SCRIPTS_DIR := $(DIR)/scripts
-
-# $(shell touch env/.compiled; touch .vb_config)
-# include ./config/version
-# include .vb_config
-# include $(dir)/env/.compiled
-
-# admin_dir := $(dir)/src/admin
-# admin_dir_compiled := $(dir)/dist/admin
-# env_dir := $(dir)/env
-
-# number ?= ${VB_test_mobile}
 
 ##
 # Runners
@@ -33,7 +19,6 @@ upgrade-v1.1.0:
 	helm upgrade versioning-poc local/versioning-poc --version 1.1.0
 
 uninstall-poc:
-	@echo 'Deleting all helm resources!'
 	helm del versioning-poc
 
 uninstall-all: uninstall-poc clean-install-base clean-add-repos
@@ -64,7 +49,6 @@ clean-install-base:
 	@rm -rf .install-base
 
 
-
 ##
 # Repo Tools
 ## 
@@ -78,6 +62,22 @@ clean-repo:
 
 run-helm-server:
 	python3 -m http.server --directory ./repo/
+
+##
+# Kafka Tools
+##
+
+kafka-list:
+	kubectl exec testclient -- kafka-topics --zookeeper kafka-zookeeper:2181 --list
+
+##
+# Kube Tools
+##
+.PHONY: watch-all switch-kube
+
+# Watch all resources in namespace
+watch-all:
+	watch -n 1 kubectl get all
 
 # Convenience function to switch back to the kubectx and ns we want
 switch-kube:
