@@ -1,5 +1,8 @@
 # Versioning POC
 
+## TODO:
+- create 2 helm versions
+
 
 
 ## Install a deployment
@@ -24,8 +27,14 @@ helm install kafka public/kafka --values ./kafka_values.yaml
 # install v1.0 of our application
 kubectl apply -f ./deployment_v1.0.yaml
 
+# check our schema
+kubectl exec -it pod/mysql-0 -- mysql -u root -ppassword central_ledger -e "describe settlementModel"
+
 # rolling upgrade to v1.1
 kubectl apply -f ./deployment_v1.1.yaml
+
+# observe the schema has changed!
+kubectl exec -it pod/mysql-0 -- mysql -u root -ppassword central_ledger -e "describe settlementModel"
 
 # TODO: 
 
@@ -39,7 +48,6 @@ kubectl delete pvc mysql-pv-claim
 kubectl delete pv mysql-pv-volume
 
 ```
-
 
 
 ## Handy Snippets:

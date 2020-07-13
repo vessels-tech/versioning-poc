@@ -11,6 +11,7 @@ spec:
     rollingUpdate:
       maxSurge: 1 # exeed the replicas by 1 pod
       # maxUnavailable: "25%" #25% of pods can be unavailable during an upgrade
+      # TODO: health checks!
   selector:
     matchLabels:
       app: centralledger
@@ -41,7 +42,7 @@ spec:
           - name: CLEDG_KAFKA__CONSUMER__ADMIN__TRANSFER__config__rdkafkaConf__metadata.broker.list
             value: kafka:9092
           # change a dummy variable to force a recreate
-          - name: CLEDG_SIDECAR__PORT
-            value: "6789"
+          # - name: CLEDG_SIDECAR__PORT
+            # value: "6789"
 
         
