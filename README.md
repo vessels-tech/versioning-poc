@@ -62,9 +62,8 @@ make upgrade-v1.2.0
 make upgrade-v2.0.0
 
 # migrate existing null quoteId column
+# make quoteId non-nullable
 make upgrade-v2.1.0
-
-make upgrade-v2.2.0
 
 
 # Clean up everything

@@ -13,24 +13,23 @@ SCRIPTS_DIR := $(DIR)/scripts
 
 install: package run-helm-server .add-repos .install-base
 	helm search repo local
-	helm install versioning-poc local/versioning-poc --version 1.0.0
+	helm upgrade --install versioning-poc local/versioning-poc --version 1.0.0
 
-upgrade-v1.1.0:
-	helm upgrade versioning-poc local/versioning-poc --version 1.1.0
+upgrade-v1.1.0: package
+	helm upgrade --install versioning-poc local/versioning-poc --version 1.1.0
 
-upgrade-v1.2.0:
-	@echo "Not implemented Yet!"
-	# helm upgrade versioning-poc local/versioning-poc --version 1.2.0
+upgrade-v1.2.0: package
+	helm upgrade --install versioning-poc local/versioning-poc --version 1.2.0
 
-upgrade-v2.0.0:
+upgrade-v2.0.0: package
 	@echo "Not implemented Yet!"
 	# helm upgrade versioning-poc local/versioning-poc --version 2.0.0
 
-upgrade-v2.1.0:
+upgrade-v2.1.0: package
 	@echo "Not implemented Yet!"
 	# helm upgrade versioning-poc local/versioning-poc --version 2.1.0
 
-upgrade-v2.2.0:
+upgrade-v2.2.0: package
 	@echo "Not implemented Yet!"
 	# helm upgrade versioning-poc local/versioning-poc --version 2.2.0
 
@@ -43,7 +42,7 @@ uninstall-all: uninstall-poc clean-install-base clean-add-repos
 ##
 # Stateful make commands
 #
-# These create respective `.commandname` files to stop make from
+# These create respective `.command-name` files to stop make from
 # running the same command multiple times
 ## 
 .add-repos:
