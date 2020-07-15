@@ -11,7 +11,7 @@ SCRIPTS_DIR := $(DIR)/scripts
 # Runners
 ##
 
-install: package .add-repos .install-base
+install: package run-helm-server .add-repos .install-base
 	helm search repo local
 	helm install versioning-poc local/versioning-poc --version 1.0.0
 
@@ -62,8 +62,9 @@ clean-add-repos:
 	@rm -rf .add-repos
 
 clean-install-base:
-	helm del kafka
-	kubectl delete -f ./deployment_setup.yaml
+	@helm del nginx || echo 'helm del nginx failed - continuing anyway'
+	@helm del kafka || echo 'helm del kafka failed - continuing anyway'
+	@kubectl delete -f ./deployment_setup.yaml || echo 'kubectl del kafka failed - continuing anyway'
 	@rm -rf .install-base
 
 
@@ -79,7 +80,11 @@ clean-repo:
 	rm -rf $(REPO_DIR)
 
 run-helm-server:
-	python3 -m http.server --directory ./repo/
+	python3 -m http.server --directory ./repo/ &> /dev/null &
+	@echo "started python server"
+
+kill-helm-server:
+	@ps aux | grep http.server | grep -v "grep" | awk '{print $$2}' | xargs kill -9
 
 ##
 # Monitoring Tools
