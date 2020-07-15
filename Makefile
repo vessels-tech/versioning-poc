@@ -22,16 +22,10 @@ upgrade-v1.2.0: package
 	helm upgrade --install versioning-poc local/versioning-poc --version 1.2.0
 
 upgrade-v2.0.0: package
-	@echo "Not implemented Yet!"
-	# helm upgrade versioning-poc local/versioning-poc --version 2.0.0
+	helm upgrade --install versioning-poc local/versioning-poc --version 2.0.0
 
 upgrade-v2.1.0: package
-	@echo "Not implemented Yet!"
-	# helm upgrade versioning-poc local/versioning-poc --version 2.1.0
-
-upgrade-v2.2.0: package
-	@echo "Not implemented Yet!"
-	# helm upgrade versioning-poc local/versioning-poc --version 2.2.0
+	helm upgrade --install versioning-poc local/versioning-poc --version 2.1.0
 
 uninstall-poc:
 	@helm del versioning-poc || echo 'versioning-poc not found'
