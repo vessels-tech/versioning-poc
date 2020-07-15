@@ -1,9 +1,9 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: centralledger
+  name: centralledger-{{ .Chart.AppVersion }}
   labels:
-    app: centralledger
+    app: centralledger-{{ .Chart.AppVersion }}
 spec:
   replicas: 3
   strategy:
@@ -13,20 +13,22 @@ spec:
       # maxUnavailable: 25% #25% of pods can be unavailable during an upgrade
   selector:
     matchLabels:
-      app: centralledger
+      app: centralledger-{{ .Chart.AppVersion }}
   template:
     metadata:
       labels:
-        app: centralledger
+        app: centralledger-{{ .Chart.AppVersion }}
     spec:
       containers:
       - name: central-ledger
-        image: mojaloop/central-ledger:v9.5.0
+        image: mojaloop/central-ledger:v10.5.2-versioning-poc-v1.1.1
         livenessProbe:
+          initialDelaySeconds: 60
           httpGet:
             path: /health
             port: 3001
         readinessProbe:
+          initialDelaySeconds: 35
           httpGet:
             path: /health
             port: 3001
@@ -62,8 +64,19 @@ spec:
             value: kafka:9092
           - name: CLEDG_KAFKA__CONSUMER__ADMIN__TRANSFER__config__rdkafkaConf__metadata.broker.list
             value: kafka:9092
-          - name: LOG_LEVEL
-            value: debug
+          # - name: LOG_LEVEL
+            # value: debug
         # command: [ "sh", "-c", "tail -f /dev/null" ]
         # securityContext:
           # runAsUser: 0
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: centralledger
+spec:
+  ports:
+  - port: 3001
+  selector:
+    app: centralledger
+  clusterIP: None

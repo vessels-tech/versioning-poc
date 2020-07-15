@@ -18,8 +18,24 @@ install: package .add-repos .install-base
 upgrade-v1.1.0:
 	helm upgrade versioning-poc local/versioning-poc --version 1.1.0
 
+upgrade-v1.2.0:
+	@echo "Not implemented Yet!"
+	# helm upgrade versioning-poc local/versioning-poc --version 1.2.0
+
+upgrade-v2.0.0:
+	@echo "Not implemented Yet!"
+	# helm upgrade versioning-poc local/versioning-poc --version 2.0.0
+
+upgrade-v2.1.0:
+	@echo "Not implemented Yet!"
+	# helm upgrade versioning-poc local/versioning-poc --version 2.1.0
+
+upgrade-v2.2.0:
+	@echo "Not implemented Yet!"
+	# helm upgrade versioning-poc local/versioning-poc --version 2.2.0
+
 uninstall-poc:
-	helm del versioning-poc
+	@helm del versioning-poc || echo 'versioning-poc not found'
 
 uninstall-all: uninstall-poc clean-install-base clean-add-repos
 
@@ -32,12 +48,14 @@ uninstall-all: uninstall-poc clean-install-base clean-add-repos
 ## 
 .add-repos:
 	helm repo add public http://storage.googleapis.com/kubernetes-charts-incubator
+	helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
 	helm repo add local http://localhost:8000
 	@touch .add-repos
 
 .install-base:
 	kubectl apply -f ./deployment_setup.yaml
 	helm install kafka public/kafka --values ./kafka_values.yaml
+	helm install nginx ingress-nginx/ingress-nginx
 	@touch .install-base
 
 clean-add-repos:
@@ -64,11 +82,27 @@ run-helm-server:
 	python3 -m http.server --directory ./repo/
 
 ##
-# Kafka Tools
+# Monitoring Tools
 ##
 
 kafka-list:
 	kubectl exec testclient -- kafka-topics --zookeeper kafka-zookeeper:2181 --list
+
+mysql-show-tables:
+	kubectl exec -it pod/mysql-0 -- mysql -u root -ppassword central_ledger -e "show tables"
+
+mysql-describe-transfer:
+	kubectl exec -it pod/mysql-0 -- mysql -u root -ppassword central_ledger -e "describe transfer"
+
+mysql-login:
+	kubectl exec -it pod/mysql-0 -- mysql -u root -ppassword central_ledger
+
+mysql-drop-database:
+	kubectl exec -it pod/mysql-0 -- mysql -u root -ppassword -e "drop database central_ledger; create database central_ledger"
+
+health-check-central-ledger:
+	@kubectl exec testclient -- curl -s centralledger:3001/health | jq
+
 
 ##
 # Kube Tools

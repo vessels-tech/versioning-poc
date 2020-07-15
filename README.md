@@ -3,6 +3,14 @@
 ## TODO:
 - create 2 helm versions
 
+
+ingress:
+```bash
+
+helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
+helm install my-release ingress-nginx/ingress-nginx
+```
+
 ## Package and Install
 
 ```bash
@@ -40,6 +48,23 @@ make run-helm-server
 # Install v1.0.0
 # make will also install any other dependencies if required
 make install
+
+# Upgrade to v1.1.0
+# apply the db schema changes: optional `quoteId` column
+make upgrade-v1.1.0
+
+# add support for v2.0 API
+make upgrade-v1.2.0
+
+# drop support for v1.X API
+# TODO: need to drain v1.X connections before this point
+# add support for v2.0 API
+make upgrade-v2.0.0
+
+# migrate existing null quoteId column
+make upgrade-v2.1.0
+
+make upgrade-v2.2.0
 
 
 # Clean up everything
@@ -121,3 +146,14 @@ kubectl -n default exec -ti testclient -- kafka-console-producer --broker-list k
 # To create a message in the above session, simply type the message and press "enter"
 # To end the producer session try: Ctrl+C
 ```
+
+
+
+## Learnings:
+
+
+- Rollbacks are hard when "automigrate" is on, since Knex will look for a migration file (that was run on say, version `1.1`) that doesn't exist in version `1.0` of the application and fail.
+    >`(node:38) UnhandledPromiseRejectionWarning: Error: The migration directory is corrupt, the following files are missing: 96105000_add_optional_quoteId.js`
+
+    - workarounds? TBD 
+        - We need a way to tell Knex: "I know what I'm doing here"

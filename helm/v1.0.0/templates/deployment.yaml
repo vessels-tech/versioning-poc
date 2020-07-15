@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: centralledger
+  name: centralledger-{{ .Chart.AppVersion }}
   labels:
     app: centralledger
 spec:
@@ -21,14 +21,14 @@ spec:
     spec:
       containers:
       - name: central-ledger
-        image: mojaloop/central-ledger:v9.5.0
+        image: mojaloop/central-ledger:v10.5.2-versioning-poc-v1.0.2
         livenessProbe:
-          initialDelaySeconds: 20
+          initialDelaySeconds: 60
           httpGet:
             path: /health
             port: 3001
         readinessProbe:
-          initialDelaySeconds: 20
+          initialDelaySeconds: 35
           httpGet:
             path: /health
             port: 3001
@@ -67,3 +67,14 @@ spec:
         # command: [ "sh", "-c", "tail -f /dev/null" ]
         securityContext:
           runAsUser: 0
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: centralledger
+spec:
+  ports:
+  - port: 3001
+  selector:
+    app: centralledger
+  clusterIP: None
