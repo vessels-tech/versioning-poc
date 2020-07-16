@@ -23,12 +23,12 @@ spec:
       - name: central-ledger
         image: mojaloop/central-ledger:v10.5.2-versioning-poc-v1.1.2
         livenessProbe:
-          initialDelaySeconds: 60
+          initialDelaySeconds: 30
           httpGet:
             path: /health
             port: 3001
         readinessProbe:
-          initialDelaySeconds: 35
+          initialDelaySeconds: 30
           httpGet:
             path: /health
             port: 3001

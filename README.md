@@ -1,9 +1,5 @@
 # Versioning POC
 
-## TODO:
-- create 2 helm versions
-
-
 ingress:
 ```bash
 

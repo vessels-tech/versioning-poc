@@ -13,7 +13,8 @@ SCRIPTS_DIR := $(DIR)/scripts
 
 install: package run-helm-server .add-repos .install-base
 	helm search repo local
-	helm upgrade --install versioning-poc local/versioning-poc --version 1.0.0
+	# helm upgrade --install versioning-poc local/versioning-poc --version 1.0.0
+	helm install versioning-poc local/versioning-poc --version 1.0.0
 
 upgrade-v1.1.0: package
 	helm upgrade --install versioning-poc local/versioning-poc --version 1.1.0

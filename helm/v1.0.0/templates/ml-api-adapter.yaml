@@ -1,0 +1,72 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mlapiadapter
+  labels:
+    app: mlapiadapter
+spec:
+  replicas: 3
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1 # exeed the replicas by 1 pod
+      # maxUnavailable: 25% #25% of pods can be unavailable during an upgrade
+  selector:
+    matchLabels:
+      app: mlapiadapter
+  template:
+    metadata:
+      labels:
+        app: mlapiadapter
+    spec:
+      containers:
+      - name: ml-api-adapter
+        # image: mojaloop/ml-api-adapter:v10.5.2-versioning-poc-v1.0.2
+        image: mojaloop/ml-api-adapter:v10.5.0
+        livenessProbe:
+          initialDelaySeconds: 30
+          httpGet:
+            path: /health
+            port: 3000
+        readinessProbe:
+          initialDelaySeconds: 30
+          httpGet:
+            path: /health
+            port: 3000
+        env:
+          - name: MLAPI_KAFKA__PRODUCER__TRANSFER__PREPARE__config__rdkafkaConf__metadata.broker.list
+            value: kafka:9092
+          - name: MLAPI_KAFKA__PRODUCER__TRANSFER__FULFIL__config__rdkafkaConf__metadata.broker.list
+            value: kafka:9092
+          - name: MLAPI_KAFKA__PRODUCER__TRANSFER__GET__config__rdkafkaConf__metadata.broker.list
+            value: kafka:9092
+          - name: MLAPI_KAFKA__CONSUMER__NOTIFICATION__EVENT__config__rdkafkaConf__metadata.broker.list
+            value: kafka:9092
+          # - name: CLEDG_KAFKA__CONSUMER__BULK__PROCESSING__config__rdkafkaConf__metadata.broker.list
+          #   value: kafka:9092
+          # - name: CLEDG_KAFKA__CONSUMER__BULK__FULFIL__config__rdkafkaConf__metadata.broker.list
+          #   value: kafka:9092
+          # - name: CLEDG_KAFKA__CONSUMER__TRANSFER__PREPARE__config__rdkafkaConf__metadata.broker.list
+          #   value: kafka:9092
+          # - name: CLEDG_KAFKA__CONSUMER__TRANSFER__GET__config__rdkafkaConf__metadata.broker.list
+          #   value: kafka:9092
+          # - name: CLEDG_KAFKA__CONSUMER__TRANSFER__FULFIL__config__rdkafkaConf__metadata.broker.list
+          #   value: kafka:9092
+          # - name: CLEDG_KAFKA__CONSUMER__TRANSFER__POSITION__config__rdkafkaConf__metadata.broker.list
+          #   value: kafka:9092
+          # - name: CLEDG_KAFKA__CONSUMER__ADMIN__TRANSFER__config__rdkafkaConf__metadata.broker.list
+          #   value: kafka:9092
+        # command: [ "sh", "-c", "tail -f /dev/null" ]
+        securityContext:
+          runAsUser: 0
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mlapiadapter
+spec:
+  ports:
+  - port: 3000
+  selector:
+    app: mlapiadapter
+  clusterIP: None
