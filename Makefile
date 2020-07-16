@@ -104,13 +104,10 @@ mysql-drop-database:
 	kubectl exec -it pod/mysql-0 -- mysql -u root -ppassword -e "drop database central_ledger; create database central_ledger"
 
 health-check-central-ledger:
-	# @kubectl exec testclient -- curl -s centralledger:3001/health | jq
-		@curl -H "Host: central-ledger.local"  $(ELB_URL)/health
-
+	@curl -s -H "Host: central-ledger.local"  $(ELB_URL)/health | jq
 
 health-check-ml-api-adapter:
-	# @kubectl exec testclient -- curl -s mlapiadapter:3000/health | jq
-	@curl -H "Host: ml-api-adapter.local"  $(ELB_URL)/health
+	@curl -s -H "Host: ml-api-adapter.local"  $(ELB_URL)/health | jq
 
 
 ##

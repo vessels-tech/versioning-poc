@@ -83,7 +83,7 @@ spec:
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
-  name: mlapiadapter
+  name: centralledger
 spec:
   rules:
     - host: central-ledger.local
