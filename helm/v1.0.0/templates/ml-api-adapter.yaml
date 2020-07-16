@@ -34,6 +34,10 @@ spec:
             path: /health
             port: 3000
         env:
+          - name: MLAPI_ENDPOINT_SOURCE_URL
+            value: http://centralledger:3001
+          - name: MLAPI_ENDPOINT_HEALTH_URL
+            value: http://centralledger:3001/health
           - name: MLAPI_KAFKA__PRODUCER__TRANSFER__PREPARE__config__rdkafkaConf__metadata.broker.list
             value: kafka:9092
           - name: MLAPI_KAFKA__PRODUCER__TRANSFER__FULFIL__config__rdkafkaConf__metadata.broker.list
@@ -70,3 +74,16 @@ spec:
   selector:
     app: mlapiadapter
   clusterIP: None
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: mlapiadapter
+spec:
+  rules:
+    - host: ml-api-adapter.local
+      http:
+        paths:
+          - backend:
+              serviceName: mlapiadapter
+              servicePort: 3000

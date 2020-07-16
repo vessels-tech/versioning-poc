@@ -6,6 +6,7 @@ PROJECT = "Versioning POC"
 DIR = $(shell pwd)
 REPO_DIR := $(DIR)/repo
 SCRIPTS_DIR := $(DIR)/scripts
+ELB_URL = "a2c25768ab0194fe187d21c903b78bf1-475140305.eu-west-2.elb.amazonaws.com"
 
 ##
 # Runners
@@ -15,6 +16,9 @@ install: package run-helm-server .add-repos .install-base
 	helm search repo local
 	# helm upgrade --install versioning-poc local/versioning-poc --version 1.0.0
 	helm install versioning-poc local/versioning-poc --version 1.0.0
+
+upgrade-v1.0.0: package
+	helm upgrade --install versioning-poc local/versioning-poc --version 1.0.0
 
 upgrade-v1.1.0: package
 	helm upgrade --install versioning-poc local/versioning-poc --version 1.1.0
@@ -28,7 +32,7 @@ upgrade-v2.0.0: package
 upgrade-v2.1.0: package
 	helm upgrade --install versioning-poc local/versioning-poc --version 2.1.0
 
-uninstall-poc:
+uninstall-poc: mysql-drop-database
 	@helm del versioning-poc || echo 'versioning-poc not found'
 
 uninstall-all: uninstall-poc clean-install-base clean-add-repos
@@ -100,7 +104,13 @@ mysql-drop-database:
 	kubectl exec -it pod/mysql-0 -- mysql -u root -ppassword -e "drop database central_ledger; create database central_ledger"
 
 health-check-central-ledger:
-	@kubectl exec testclient -- curl -s centralledger:3001/health | jq
+	# @kubectl exec testclient -- curl -s centralledger:3001/health | jq
+		@curl -H "Host: central-ledger.local"  $(ELB_URL)/health
+
+
+health-check-ml-api-adapter:
+	# @kubectl exec testclient -- curl -s mlapiadapter:3000/health | jq
+	@curl -H "Host: ml-api-adapter.local"  $(ELB_URL)/health
 
 
 ##
