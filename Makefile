@@ -52,6 +52,7 @@ uninstall-all: uninstall-poc clean-install-base clean-add-repos
 
 .install-base:
 	kubectl apply -f ./deployment_setup.yaml
+	# kubectl apply -f ./deployment_simulator.yaml
 	helm install kafka public/kafka --values ./kafka_values.yaml
 	helm install nginx ingress-nginx/ingress-nginx
 	@touch .install-base
@@ -62,6 +63,7 @@ clean-add-repos:
 clean-install-base:
 	@helm del nginx || echo 'helm del nginx failed - continuing anyway'
 	@helm del kafka || echo 'helm del kafka failed - continuing anyway'
+	# @kubectl delete -f ./deployment_simulator.yaml || echo 'kubectl del simulator failed - continuing anyway'
 	@kubectl delete -f ./deployment_setup.yaml || echo 'kubectl del kafka failed - continuing anyway'
 	@rm -rf .install-base
 
@@ -106,8 +108,11 @@ mysql-drop-database:
 health-check-central-ledger:
 	@curl -s -H "Host: central-ledger.local"  $(ELB_URL)/health | jq
 
-health-check-ml-api-adapter:
+health-check-ml-api-adapter-old:
 	@curl -s -H "Host: ml-api-adapter.local"  $(ELB_URL)/health | jq
+
+health-check-ml-api-adapter:
+	@curl -s $(ELB_URL)/ml-api-adapter/health | jq
 
 
 ##

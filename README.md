@@ -150,8 +150,13 @@ kubectl -n default exec -ti testclient -- kafka-console-producer --broker-list k
 # curl -s -H "Host: testapi.local"  a2c25768ab0194fe187d21c903b78bf1-475140305.eu-west-2.elb.amazonaws.com/health
 curl -s \
     -H "Host: simulator.local" \
-    a2c25768ab0194fe187d21c903b78bf1-475140305.eu-west-2.elb.amazonaws.com/sim/dfspa/outbound
+    a2c25768ab0194fe187d21c903b78bf1-475140305.eu-west-2.elb.amazonaws.com/sim/dfspa/inbound
 ```
+
+/sim/dfspa/outbound/
+/sim/dfspa/inbound/
+/sim/dfspa/sdktest/
+/sim/dfspa/test/
 
 
 

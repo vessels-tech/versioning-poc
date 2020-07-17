@@ -61,11 +61,21 @@ apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
   name: mlapiadapter
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+    nginx.ingress.kubernetes.io/use-regex: "true"
 spec:
   rules:
-    - host: ml-api-adapter.local
-      http:
-        paths:
-          - backend:
+    # - host: ml-api-adapter.local
+    #   http:
+    #     paths:
+    #       - path: /(/|$)(.*)
+    #         backend:
+    #           serviceName: mlapiadapter
+    #           servicePort: 3000
+    - http:
+        paths: 
+          - path: /ml-api-adapter(/|$)(.*)
+            backend:
               serviceName: mlapiadapter
               servicePort: 3000
