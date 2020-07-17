@@ -88,3 +88,6 @@ spec:
   - name: kafka
     image: confluentinc/cp-kafka:5.0.1
     command: [ "sh", "-c", "tail -f /dev/null" ]
+
+---
+# Mojaloop Simulators

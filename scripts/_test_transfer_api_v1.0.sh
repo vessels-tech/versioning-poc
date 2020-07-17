@@ -5,8 +5,7 @@
 
 ELB_URL="a2c25768ab0194fe187d21c903b78bf1-475140305.eu-west-2.elb.amazonaws.com"
 
-# TODO: seed the database
-
+# TODO: seed the database???
 
 curl --location --request POST "${ELB_URL}/transfers" \
 --header "Host: ml-api-adapter.local" \

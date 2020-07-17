@@ -142,6 +142,18 @@ kubectl -n default exec -ti testclient -- kafka-console-producer --broker-list k
 # To end the producer session try: Ctrl+C
 ```
 
+### Simulators
+
+```bash
+# curl -s -H "Host: simapi.local"  a2c25768ab0194fe187d21c903b78bf1-475140305.eu-west-2.elb.amazonaws.com/health
+# curl -s -H "Host: reportapi.local"  a2c25768ab0194fe187d21c903b78bf1-475140305.eu-west-2.elb.amazonaws.com/health
+# curl -s -H "Host: testapi.local"  a2c25768ab0194fe187d21c903b78bf1-475140305.eu-west-2.elb.amazonaws.com/health
+curl -s \
+    -H "Host: simulator.local" \
+    a2c25768ab0194fe187d21c903b78bf1-475140305.eu-west-2.elb.amazonaws.com/sim/dfspa/outbound
+```
+
+
 
 
 ## Learnings:
@@ -152,3 +164,7 @@ kubectl -n default exec -ti testclient -- kafka-console-producer --broker-list k
 
     - workarounds? TBD 
         - We need a way to tell Knex: "I know what I'm doing here"
+
+
+
+
