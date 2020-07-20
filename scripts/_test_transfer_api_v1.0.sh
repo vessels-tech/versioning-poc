@@ -3,8 +3,8 @@
 # A simple test transfer
 # We will probably use a nice testing script to test this properly
 
-# ELB_URL="a2c25768ab0194fe187d21c903b78bf1-475140305.eu-west-2.elb.amazonaws.com/ml-api-adapter"
-ELB_URL="localhost:3000"
+ELB_URL="a2c25768ab0194fe187d21c903b78bf1-475140305.eu-west-2.elb.amazonaws.com/ml-api-adapter"
+# ELB_URL="localhost:3000"
 
 # TODO: seed the database???
 
