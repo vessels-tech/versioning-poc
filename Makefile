@@ -14,8 +14,8 @@ ELB_URL = "a2c25768ab0194fe187d21c903b78bf1-475140305.eu-west-2.elb.amazonaws.co
 
 install: package run-helm-server .add-repos .install-base
 	helm search repo local
-	# helm upgrade --install versioning-poc local/versioning-poc --version 1.0.0
-	helm install versioning-poc local/versioning-poc --version 1.0.0
+	helm upgrade --install versioning-poc local/versioning-poc --version 1.0.0
+	# helm install versioning-poc local/versioning-poc --version 1.0.0
 
 upgrade-v1.0.0: package
 	helm upgrade --install versioning-poc local/versioning-poc --version 1.0.0
@@ -107,6 +107,9 @@ mysql-drop-database:
 
 health-check-central-ledger:
 	@curl -s -H "Host: central-ledger.local"  $(ELB_URL)/health | jq
+
+health-check-central-ledger-local:
+	@curl central-ledger.local/health | jq
 
 health-check-ml-api-adapter-old:
 	@curl -s -H "Host: ml-api-adapter.local"  $(ELB_URL)/health | jq

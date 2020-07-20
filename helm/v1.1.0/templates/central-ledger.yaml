@@ -79,3 +79,16 @@ spec:
   selector:
     app: centralledger
   clusterIP: None
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: centralledger
+spec:
+  rules:
+    - host: central-ledger.local
+      http:
+        paths:
+          - backend:
+              serviceName: centralledger
+              servicePort: 3001
