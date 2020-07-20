@@ -89,7 +89,6 @@ kill-helm-server:
 ##
 # Monitoring Tools
 ##
-
 kafka-list:
 	kubectl exec testclient -- kafka-topics --zookeeper kafka-zookeeper:2181 --list
 
@@ -117,6 +116,11 @@ health-check-ml-api-adapter-old:
 health-check-ml-api-adapter:
 	@curl -s $(ELB_URL)/ml-api-adapter/health | jq
 
+transfer-api-v1.0:
+	./scripts/_test_transfer_api_v1.0.sh
+
+transfer-api-v2.0:
+	./scripts/_test_transfer_api_v2.0.sh
 
 ##
 # Kube Tools

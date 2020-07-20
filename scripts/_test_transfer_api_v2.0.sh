@@ -3,10 +3,10 @@
 # A simple test transfer
 # We will probably use a nice testing script to test this properly
 
-ELB_URL="a2c25768ab0194fe187d21c903b78bf1-475140305.eu-west-2.elb.amazonaws.com"
+# ELB_URL="a2c25768ab0194fe187d21c903b78bf1-475140305.eu-west-2.elb.amazonaws.com/ml-api-adapter"
+ELB_URL="localhost:3000"
 
-# TODO: seed the database
-
+# TODO: seed the database?
 
 curl --location --request POST "${ELB_URL}/transfers" \
 --header "Host: ml-api-adapter.local" \
@@ -20,9 +20,9 @@ curl --location --request POST "${ELB_URL}/transfers" \
 --header 'FSPIOP-HTTP-Method: POST' \
 --data-raw '{
   "transferId": "ceabbe96-b5d8-45dd-9856-5d66eab7c72b",
+  "quoteId": "abcbbe96-b5d8-45dd-9856-5d66eab7c72b",
   "payerFsp": "payerfsp",
   "payeeFsp": "payeefsp",
-  "quoteId": "12345-6789",
   "amount": {
     "amount": "1",
     "currency": "USD"
